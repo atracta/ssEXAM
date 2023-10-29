@@ -1,5 +1,12 @@
 ---
-- hosts: atracta
-  gather_facts: true
-  connection: local
-  roles:
+- hosts: slave
+  become: yes
+  name: Execute the bash script on the Slave node
+  tasks:
+    - name: Execute the bash script
+      script: vagrant/script.sh
+    - name: Create a cron job to check the server's uptime every 12 am.
+      ansible.builtin.cron:
+        name: "uptime"
+        minute: "0"
+        hour: "12"
